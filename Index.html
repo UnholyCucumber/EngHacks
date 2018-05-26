@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <title> UW Schedule Planner </title>
-<header>
+<head>
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="https://raw.githubusercontent.com/daneden/animate.css/master/animate.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://github.com/kswedberg/jquery-smooth-scroll/blob/master/jquery.smooth-scroll.min.js"></script>
 	<script>
-$		('.smooth').on('click', function() {
+	$('.smooth').on('click', function() {
 			$.smoothScroll({
 			scrollElement: $('body'),
 			scrollTarget: '#' + this.id
@@ -15,17 +15,53 @@ $		('.smooth').on('click', function() {
 			return false;
 		});
 	</script>
-</header>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 <body>
 	<header>
 	UW Schedule Planner
 	</header>
+	<p style="font-family: Montserrat;
+	color: white;
+	size: 400px;
+	z-index: 11;
+	position: relative;
+	left: 0%;
+	text-align: center;
+	z-index: 100;
+	top: 100px;">
+	This Website was Built as a Part of EngHacks 2018
+	</p>
+	<p>
+	This Website is
+	</p>
+	
+	<input type="text" id="courseselect" placeholder="Enter Course Code Here">
+	
+	<select style="font-family: Montserrat;
+			    transition:.3s;
+				    border:2px solid #aaa;
+						font: Montserrat;
+						position: relative;
+						left: 6%;
+						top: 250px;
+						border-radius: 30px;
+						text-align: center;"
+
+						>
+		<option value="W2018">Winter 2018</option>
+		<option value="F2018">Fall 2018</option>
+	</select>
+	
+	
 	
 	<section class="sec1"></section>
 	<section class="sec2"></section>
 	
-	<input type="text" id="courseselect" placeholder="Insert Course Code Here">
+
+	
+	
 
 
 </body>
