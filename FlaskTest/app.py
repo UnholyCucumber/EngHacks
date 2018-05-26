@@ -1,4 +1,5 @@
 from flask import Flask,jsonify
+import json
 import TestFunctionLib
 
 app = Flask(__name__)
@@ -12,7 +13,7 @@ def about():
 	return '<h2> About page </h2>'
 @app.route('/functionTest/<call>')
 def whatameme(call):
-	return jsonify(TestFunctionLib.testFunc(call))
+	return json.dumps(TestFunctionLib.testFunc(call))
 
 
 if __name__ == "__main__":
