@@ -2,18 +2,20 @@ import re
 import json
 import requests
 
-import classes.course as course
+import course as course
 
 payload = { 'key': '737f0946481560fccacc9ec4afd0c3c1' } 
 api = 'https://api.uwaterloo.ca/v2/'
 CONST_UW = "UW U"
 
+
+# passing on this since it is not a functional requirement...
 def get_courses_by_substr(substr):
 	
 	if substr == '' or not substr:
 		return None
 
-
+	# all the courses returned from the request
 	allCourses = json.loads(requests.get(url = api + 'courses.json', params = payload).text)
 
 	# get subject, and catalog(if catalog exists)
@@ -23,7 +25,7 @@ def get_courses_by_substr(substr):
 	
 	if len(subject) > 4:
 		return None
-		
+
 	if regex.group(2):
 		catalog = regex.group(2)
 	else:
@@ -32,20 +34,19 @@ def get_courses_by_substr(substr):
 
 	# go through all the courses and find matches based on name and catalog.
 	results = []
-	if catalog:
-		for item in allCourses["data"]:
-			name = item["subject"]
-			if 
+	while len(results) < 25:
+		if catalog:
+			for item in allCourses["data"]:
+				name = item["subject"]
+				if subject == name and (catalog in item["catalog_number"]):
+					results.append(subjects)
+	return None
 
-	else:
 
 
+def get_course_data(crsCode):
 
-	relevantCourses = allCourses
-
-def get_time_for_course(crsCode):
-
-	if crsCode == '' or not crsCode:
+	if not crsCode:
 		return
  
 	crsCode = crsCode.upper()
@@ -57,20 +58,31 @@ def get_time_for_course(crsCode):
 	response = requests.get(url = api + 'courses/' + subject + '/' + catalog + '/schedule.json', params = payload)
 	response = json.loads(response.text)
 
-	courses = []
+	allSubSections = {}
+	currList = []
+
 	for item in response["data"]:
-		if item["campus"] == "UW U":
+		if item["campus"] == CONST_UW:
+			currType = item["section"][:3]
+
+			# if new class type detected, add what we have to the hash, and re-init the list.
+			if currList and (currType != currList[-1].classType):
+				allSubSections[currList[-1].classType] = currList
+				currList = []
+
 			name = item["subject"] + item["catalog_number"]
 			date = item["classes"][0]["date"]
-			curr = course.Course(name, int(item["class_number"]), date["start_time"], date["end_time"])
-			courses.append(curr)
-	print courses[1].classNumber
+			currCourse = course.Course(name, int(item["class_number"]), date["start_time"], date["end_time"], currType)
+
+			currList.append(currCourse)
+	allSubSections[currType] = currList
+
+	return allSubSections
 
 
 
-def test_get_time_for_course(crsCode):
-	get_time_for_course(crsCode)
 
 
 
-test_get_time_for_course("MATH235")
+def test_get_course_data(crsCode):
+	get_course_data(crsCode)
